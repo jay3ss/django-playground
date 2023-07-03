@@ -17,7 +17,7 @@ clean:
 	find . -name "__pycache__" -delete
 
 makemigrations:
-	$(MANAGE) makemigrations
+	$(MANAGE) makemigrations $(app)
 
 migrate:
 	$(MANAGE) migrate
