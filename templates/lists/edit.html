@@ -1,5 +1,4 @@
 {% extends '_base.html' %}
-{% load crispy_forms_tags %}
 {% load static %}
 
 {% block content %}
@@ -11,16 +10,7 @@
 </header>
 <section class="page-section list">
     <div class="container col-lg-6 col-sm-12 align-self-center mb-5">
-        <form action="" method="post">
-            {% csrf_token %}
-            {{  form|crispy }}
-
-            {{ formset.management_form }}
-            {% for form in formset %}
-                {{ form|crispy }}
-            {% endfor %}
-            <button class="btn btn-success" type="submit">Save</button>
-        </form>
+        {% include "_form.html" %}
     </div>
 </section>
 {% endblock content %}
