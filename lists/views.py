@@ -38,6 +38,7 @@ def list_item_edit(request: HttpRequest, pk: int) -> HttpResponse:
         formset = ListItemInlineFormset(request.POST, instance=list_obj)
         if form.is_valid() and formset.is_valid():
             formset.save()
+            form.save()
             return HttpResponseRedirect(list_obj.get_absolute_url())
 
     form = ListForm(instance=list_obj)
