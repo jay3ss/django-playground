@@ -1,12 +1,9 @@
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm
 
-from .models import List, ListItem
+from .models import List
 
 
 class ListForm(ModelForm):
     class Meta:
         model = List
         exclude = ("owner",)
-
-
-ListItemInlineFormset = inlineformset_factory(List, ListItem, fields=("text",), extra=2)

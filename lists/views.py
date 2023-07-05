@@ -1,10 +1,11 @@
+from django.forms import inlineformset_factory
 from django.http import HttpRequest
 from django.shortcuts import get_list_or_404, render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import DeleteView
 
-from .forms import ListForm, ListItemInlineFormset
+from .forms import ListForm
 from .models import List, ListItem
 
 
@@ -30,8 +31,11 @@ class ListItemDeleteView(DeleteView):
     success_url = reverse_lazy("list_index")
 
 
-def list_item_edit(request: HttpRequest, pk: int) -> HttpResponse:
+def list_edit(request: HttpRequest, pk: int) -> HttpResponse:
     list_obj = List.objects.get(pk=pk)
+    ListItemInlineFormset = inlineformset_factory(
+        List, ListItem, fields=("text",), extra=2
+    )
 
     if request.method == "POST":
         form = ListForm(request.POST, instance=list_obj)
@@ -57,3 +61,23 @@ def list_item_delete(request: HttpRequest, pk: int) -> HttpResponse:
         return HttpResponseRedirect(reverse("list_detail", kwargs={"pk", list_pk}))
 
     return render(request, "list/detail.html", context)
+
+
+def list_new(request: HttpRequest, pk: int) -> HttpResponse:
+    ListItemInlineFormset = inlineformset_factory(
+        List, ListItem, fields=("text",), extra=5
+    )
+
+    if request.method == "POST":
+        list_obj = List.objects.get(pk=pk)
+        form = ListForm(request.POST, instance=list_obj)
+        formset = ListItemInlineFormset(request.POST, instance=list_obj)
+        if form.is_valid() and formset.is_valid():
+            formset.save()
+            form.save()
+            return HttpResponseRedirect(list_obj.get_absolute_url())
+
+    form = ListForm(instance=list_obj)
+    formset = ListItemInlineFormset(instance=list_obj)
+    context = {"form": form, "formset": formset}
+    return render(request, "lists/new.html", context)
