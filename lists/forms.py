@@ -9,4 +9,4 @@ class ListForm(ModelForm):
         exclude = ("owner",)
 
 
-ListItemInlineFormset = inlineformset_factory(List, ListItem, fields="__all__", extra=5)
+ListItemInlineFormset = inlineformset_factory(List, ListItem, fields=("text",), extra=2)
