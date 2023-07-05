@@ -17,7 +17,7 @@
 
             {{ formset.management_form }}
             {% for form in formset %}
-                {% crispy form %}
+                {{ form|crispy }}
             {% endfor %}
             <button class="btn btn-success" type="submit">Save</button>
         </form>
