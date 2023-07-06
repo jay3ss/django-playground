@@ -1,0 +1,21 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} - Log Out{% endblock title %}
+
+{% block content %}
+<header class="masthead bg-primary text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-Outpercase mb-0">Log Out</h1>
+        <p>Are you sure you want to sign out?</p>
+        <form action="{% url 'account_logout' %}" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-danger">Log Out</button>
+        </form>
+    </div>
+</header>
+<section class="page-section list">
+</section>
+{% endblock content %}
