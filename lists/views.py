@@ -1,4 +1,7 @@
 from typing import Any, Dict
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
@@ -11,13 +14,13 @@ from .forms import ListForm
 from .models import List, ListItem
 
 
-class ListDetailView(DetailView):
+class ListDetailView(LoginRequiredMixin, DetailView):
     model = List
     template_name = "lists/detail.html"
     context_object_name = "list_obj"
 
 
-class ListIndexView(ListView):
+class ListIndexView(LoginRequiredMixin, ListView):
     model = List
     template_name = "lists/index.html"
     context_object_name = "lists"
@@ -28,16 +31,17 @@ class ListIndexView(ListView):
         return context
 
 
-class ListDeleteView(DeleteView):
+class ListDeleteView(LoginRequiredMixin, DeleteView):
     model = List
     success_url = reverse_lazy("list_index")
 
 
-class ListItemDeleteView(DeleteView):
+class ListItemDeleteView(LoginRequiredMixin, DeleteView):
     model = ListItem
     success_url = reverse_lazy("list_index")
 
 
+@login_required
 def list_edit(request: HttpRequest, pk: int) -> HttpResponse:
     list_obj = List.objects.get(pk=pk)
     ListItemInlineFormset = inlineformset_factory(
@@ -58,6 +62,7 @@ def list_edit(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "lists/edit.html", context)
 
 
+@login_required
 def list_item_delete(request: HttpRequest, pk: int) -> HttpResponse:
     context = {}
     list_item: ListItem = get_list_or_404(ListItem, pk=pk)
@@ -70,6 +75,7 @@ def list_item_delete(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "list/detail.html", context)
 
 
+@login_required
 def list_new(request: HttpRequest) -> HttpResponse:
     ListItemInlineFormset = inlineformset_factory(
         List, ListItem, fields=("text",), extra=5
@@ -90,7 +96,7 @@ def list_new(request: HttpRequest) -> HttpResponse:
     return render(request, "lists/new.html", context)
 
 
-class ListNewView(CreateView):
+class ListNewView(LoginRequiredMixin, CreateView):
     model = List
     template_name = "lists/new.html"
 
@@ -125,7 +131,7 @@ class ListNewView(CreateView):
         return super().form_valid(form)
 
 
-class PublicListsIndexView(ListView):
+class PublicListsIndexView(LoginRequiredMixin, ListView):
     model = List
     template_name = "lists/index.html"
     context_object_name = "lists"
