@@ -118,3 +118,14 @@ class ListNewView(CreateView):
             formset.save()
 
         return super().form_valid(form)
+
+
+class PublicListsIndexView(ListView):
+    model = List
+    template_name = "lists/index.html"
+    context_object_name = "lists"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["lists"] = List.objects.all().filter(is_public=True)
+        return context
