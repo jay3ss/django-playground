@@ -13,11 +13,11 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
-                {% comment %} <li class="nav-item mx-0 mx-lg-1">
+                <li class="nav-item mx-0 mx-lg-1">
                     <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'list_public' %}">
                         Public Lists
                     </a>
-                </li> {% endcomment %}
+                </li>
                 <li class="nav-item mx-0 mx-lg-1">
                     <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'list_index' %}">
                         My Lists
