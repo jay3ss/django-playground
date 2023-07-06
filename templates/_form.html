@@ -4,9 +4,11 @@
     {% csrf_token %}
     {{  form|crispy }}
 
-    {{ formset.management_form }}
-    {% for form in formset %}
-        {{ form|crispy }}
-    {% endfor %}
+    {% if formset %}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form|crispy }}
+        {% endfor %}
+    {% endif %}
     <button class="btn btn-success" type="submit">Save</button>
 </form>
