@@ -1,0 +1,43 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %} - {{ user }}'s Lists{% endblock title %}
+
+{% block content %}
+<header class="masthead bg-primary text-white text-center pb-5">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">Public Lists</h1>
+        <div class="divider-custom divider-light mb-0">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <div><a class="btn btn-secondary mt-5" href="{% url 'list_new' %}">New List</a></div>
+    </div>
+</header>
+<section class="page-section lists">
+    <div class="container d-flex align-items-center flex-column mb-5">
+        {% for list_obj in lists %}
+        <h2 class="page-section-heading text-center text-uppercase text-secondary">
+            {{ list_obj.title }}
+        </h2>
+        <p class="text-muted">
+            {{ list_obj.items.count }} item{{ list_obj.items.count|pluralize }}
+            and is {% if not list_obj.is_public %}not {% endif %}public.
+        </p>
+
+        <div class="button-group">
+            <a href="{{ list_obj.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+        </div>
+        {% empty %}
+        <p class="text-center fs-4 text">
+            Looks like there's nothing here. How about you create a
+            <a class="" href="{% url 'list_new' %}">new list</a>?
+        </p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock content %}
