@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    generate_fake_data,
     ListDetailView,
     ListDeleteView,
     # ListEditView,
@@ -18,5 +19,6 @@ urlpatterns = [
     path("delete/<slug:slug>/<uuid:pk>/", ListDeleteView.as_view(), name="list_delete"),
     path("new/", list_new, name="list_new"),
     path("public/", PublicListsIndexView.as_view(), name="list_public"),
+    path("data/", generate_fake_data, name="generate_fake_data"),
     # path("<slug:slug>/<uuid:pk>/delete", ListDeleteView.as_view(), name="list_item_delete"),
 ]

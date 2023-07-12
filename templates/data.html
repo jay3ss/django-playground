@@ -1,0 +1,29 @@
+{% extends '_base.html' %}
+
+{% block title %} - Generate Fake Data{% endblock title %}
+
+{% block content %}
+<header class="masthead bg-primary text-white text-center pb-5">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">
+            Want to Generate Fake Data?
+        </h1>
+    </div>
+</header>
+<section class="page-section lists">
+    <div class="container d-flex align-items-center flex-column mb-5">
+        {% comment %} <h2 class="page-section-heading text-center text-uppercase text-secondary">
+            Want to Generate Fake Data?
+        </h2> {% endcomment %}
+        <p>
+            Click the button below to generate fake data!
+        </p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-info">Create</button>
+        </form>
+    </div>
+</section>
+{% endblock content %}

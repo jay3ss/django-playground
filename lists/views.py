@@ -146,3 +146,71 @@ class PublicListsIndexView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["lists"] = List.objects.all().filter(is_public=True)
         return context
+
+
+def generate_fake_data(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        # do processing of data here
+        from django.contrib.auth import get_user_model
+        import random
+        import requests
+
+        User = get_user_model()
+
+        # Generate 15 different usernames
+        response = requests.get("https://randomuser.me/api/?results=15")
+        data = response.json()
+        usernames = [user["login"]["username"] for user in data["results"]]
+
+        # create the users
+        users = [
+            User.objects.create_user(
+                username=username,
+                email=f"{username}@example.com",
+                password="password",
+            )
+            for username in usernames
+        ]
+
+        # Generate 10 titles for to-do lists
+        list_titles = [
+            "Shopping List",
+            "Home Improvement Tasks",
+            "Work Projects",
+            "Fitness Goals",
+            "Recipe Ideas",
+            "Travel Bucket List",
+            "Books to Read",
+            "Movies to Watch",
+            "Gift Ideas",
+            "Personal Goals",
+        ]
+
+        # Generate 25 list items
+        response = requests.get("https://api.quotable.io/quotes/random?limit=25")
+        data = response.json()
+
+        list_items = [quote["content"] for quote in data]
+
+        lists = [
+            List.objects.create(
+                title=random.choice(list_titles),
+                owner=random.choice(users),
+                is_public=random.choice([True, False]),
+            )
+            for _ in range(random.randint(5, 9))
+        ]
+
+        for list_obj in lists:
+            list_obj.items = [
+                ListItem.objects.create(
+                    text=random.choice(list_items),
+                    is_complete=random.choice([True, False]),
+                )
+                for _ in range(random.randint(5, 9))
+            ]
+
+        return redirect(reverse("list_index"))
+
+    # serve the template for get requests
+    return render(request, "data.html")
