@@ -5,7 +5,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_list_or_404, render, HttpResponse, HttpResponseRedirect
+from django.shortcuts import (
+    get_list_or_404,
+    redirect,
+    render,
+    HttpResponse,
+    HttpResponseRedirect,
+)
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView
@@ -45,6 +51,9 @@ def list_edit(request: HttpRequest, pk: int, slug: str) -> HttpResponse:
     ListItemInlineFormset = inlineformset_factory(
         List, ListItem, fields=("text",), extra=2
     )
+
+    if not list_obj.owner == request.user:
+        return redirect("list_index")
 
     if request.method == "POST":
         form = ListForm(request.POST, instance=list_obj)
