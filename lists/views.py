@@ -38,7 +38,7 @@ class ListItemDeleteView(DeleteView):
     success_url = reverse_lazy("list_index")
 
 
-def list_edit(request: HttpRequest, pk: int) -> HttpResponse:
+def list_edit(request: HttpRequest, pk: int, slug: str) -> HttpResponse:
     list_obj = List.objects.get(pk=pk)
     ListItemInlineFormset = inlineformset_factory(
         List, ListItem, fields=("text",), extra=2
@@ -58,7 +58,7 @@ def list_edit(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "lists/edit.html", context)
 
 
-def list_item_delete(request: HttpRequest, pk: int) -> HttpResponse:
+def list_item_delete(request: HttpRequest, pk: int, slug: str) -> HttpResponse:
     context = {}
     list_item: ListItem = get_list_or_404(ListItem, pk=pk)
 
