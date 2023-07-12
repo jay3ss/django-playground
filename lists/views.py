@@ -202,13 +202,12 @@ def generate_fake_data(request: HttpRequest) -> HttpResponse:
         ]
 
         for list_obj in lists:
-            list_obj.items = [
+            for _ in range(random.randint(5, 9)):
                 ListItem.objects.create(
+                    list=list_obj,
                     text=random.choice(list_items),
                     is_complete=random.choice([True, False]),
                 )
-                for _ in range(random.randint(5, 9))
-            ]
 
         return redirect(reverse("list_index"))
 
