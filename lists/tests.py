@@ -44,6 +44,12 @@ class TestList(TestCase):
         self.assertEqual(l.items.count(), 1)
         self.assertEqual(l.items.first().text, "A list item")
 
+    def test_that_user_cant_see_other_users_private_lists(self):
+        user2 = get_user_model().objects.create_user(
+            username="test2",
+            email="test2@example.com",
+        )
+
 
 class TestListItem(TestCase):
     @classmethod

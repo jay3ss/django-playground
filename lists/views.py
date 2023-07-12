@@ -11,6 +11,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView
 
 from .forms import ListForm
+from .mixins import OwnershipRequiredMixin
 from .models import List, ListItem
 
 
@@ -31,12 +32,12 @@ class ListIndexView(LoginRequiredMixin, ListView):
         return context
 
 
-class ListDeleteView(LoginRequiredMixin, DeleteView):
+class ListDeleteView(LoginRequiredMixin, OwnershipRequiredMixin, DeleteView):
     model = List
     success_url = reverse_lazy("list_index")
 
 
-class ListItemDeleteView(LoginRequiredMixin, DeleteView):
+class ListItemDeleteView(LoginRequiredMixin, OwnershipRequiredMixin, DeleteView):
     model = ListItem
     success_url = reverse_lazy("list_index")
 
