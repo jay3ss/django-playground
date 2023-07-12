@@ -8,12 +8,17 @@
     <div class="container d-flex align-items-center flex-column">
         <!-- Masthead Heading-->
         <h1 class="masthead-heading text-uppercase mb-0">{{ user }}'s Lists</h1>
+        <div class="divider-custom divider-light mb-0">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
         <div><a class="btn btn-secondary mt-5" href="{% url 'list_new' %}">New List</a></div>
     </div>
 </header>
 <section class="page-section lists">
-    {% for list_obj in lists %}
     <div class="container d-flex align-items-center flex-column mb-5">
+    {% for list_obj in lists %}
         <h2 class="page-section-heading text-center text-uppercase text-secondary">
             {{ list_obj.title }}
         </h2>
@@ -27,7 +32,12 @@
             <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
             <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
         </div>
+        {% empty %}
+        <p class="text-center fs-4 text">
+            Looks like there's nothing here. How about you create a
+            <a class="" href="{% url 'list_new' %}">new list</a>?
+        </p>
+        {% endfor %}
     </div>
-    {% endfor %}
 </section>
 {% endblock content %}

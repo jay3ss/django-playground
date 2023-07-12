@@ -26,10 +26,8 @@ class ListIndexView(LoginRequiredMixin, ListView):
     template_name = "lists/index.html"
     context_object_name = "lists"
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context["lists"] = self.request.user.lists.all()
-        return context
+    def get_queryset(self):
+        return self.request.user.lists.all()
 
 
 class ListDeleteView(LoginRequiredMixin, OwnershipRequiredMixin, DeleteView):
@@ -42,8 +40,7 @@ class ListItemDeleteView(LoginRequiredMixin, OwnershipRequiredMixin, DeleteView)
     success_url = reverse_lazy("list_index")
 
 
-@login_required
-def list_edit(request: HttpRequest, pk: int) -> HttpResponse:
+def list_edit(request: HttpRequest, pk: int, slug: str) -> HttpResponse:
     list_obj = List.objects.get(pk=pk)
     ListItemInlineFormset = inlineformset_factory(
         List, ListItem, fields=("text",), extra=2
@@ -63,8 +60,7 @@ def list_edit(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "lists/edit.html", context)
 
 
-@login_required
-def list_item_delete(request: HttpRequest, pk: int) -> HttpResponse:
+def list_item_delete(request: HttpRequest, pk: int, slug: str) -> HttpResponse:
     context = {}
     list_item: ListItem = get_list_or_404(ListItem, pk=pk)
 
