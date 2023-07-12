@@ -26,7 +26,7 @@ class List(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("list_detail", kwargs={"pk": self.id, "slug": self.slug})
+        return reverse("list_detail", kwargs={"pk": self.pk, "slug": self.slug})
 
     def __str__(self) -> str:
         return f"{self.title} ({self.owner})"
