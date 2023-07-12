@@ -13,8 +13,12 @@
             This list is <strong>{% if not list_obj.is_public %}not {% endif %}public</strong>.
         </p>
         <div class="button-group">
-            <a href="{% url 'list_edit' list_obj.pk %}" class="btn btn-sm btn-secondary">Edit</a>
-            <a href="{% url 'list_delete' list_obj.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            <a href="{% url 'list_edit' list_obj.slug list_obj.pk %}" class="btn btn-sm btn-secondary">
+                Edit
+            </a>
+            <a href="{% url 'list_delete' list_obj.slug list_obj.pk %}" class="btn btn-sm btn-danger">
+                Delete
+            </a>
         </div>
     </div>
 </header>
