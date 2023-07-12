@@ -22,10 +22,8 @@ class ListIndexView(ListView):
     template_name = "lists/index.html"
     context_object_name = "lists"
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context["lists"] = self.request.user.lists.all()
-        return context
+    def get_queryset(self):
+        return self.request.user.lists.all()
 
 
 class ListDeleteView(DeleteView):
