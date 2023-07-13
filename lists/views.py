@@ -195,10 +195,11 @@ def generate_fake_data(request: HttpRequest) -> HttpResponse:
         lists = [
             List.objects.create(
                 title=random.choice(list_titles),
-                owner=random.choice(users),
+                owner=user,
                 is_public=random.choice([True, False]),
             )
             for _ in range(random.randint(5, 9))
+            for user in users
         ]
 
         for list_obj in lists:
