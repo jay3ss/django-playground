@@ -14,8 +14,8 @@
 <section class="page-section lists">
     {% for list_obj in lists %}
     <div class="container d-flex align-items-center flex-column mb-5">
-        <h2 class="page-section-heading text-center text-secondary mt-5">
-            {{ list_obj.title }}
+        <h2 class="page-section-heading text-center text-secondary mt-3">
+            <a href="{{ list_obj.get_absolute_url }}">{{ list_obj.title }}</a>
         </h2>
         <p>
             Belongs to <strong>{{ list_obj.owner }}</strong>, has {{ list_obj.items.count }}
